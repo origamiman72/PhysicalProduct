@@ -18,10 +18,6 @@ public class GameScreen implements Screen {
     private Viewport gamePort;
     private final int LEVEL_WIDTH;
     private final int LEVEL_HEIGHT;
-    float scrw=320;
-
-    float scrh=480;
-
 
 
     Texture blockTexture = new Texture("mojave_dynamic_6.jpeg");
@@ -36,9 +32,9 @@ public class GameScreen implements Screen {
         LEVEL_HEIGHT = MyGdxGame.V_HEIGHT;
 
         gameCam = new OrthographicCamera();
-        gameCam.setToOrtho(false, scrw, scrh);
+        gameCam.setToOrtho(false, LEVEL_WIDTH, LEVEL_HEIGHT);
         gameCam.update();
-        gamePort = new FitViewport(scrw, scrh, gameCam);
+        gamePort = new FitViewport(LEVEL_WIDTH, LEVEL_HEIGHT, gameCam);
 
 
         for(int i = 0; i < blocks.length; i++){
@@ -72,7 +68,7 @@ public class GameScreen implements Screen {
     //Extra methods provided by Screen implement
     @Override
     public void resize(int width, int height) {
-
+        gamePort.update(width, height);
     }
     @Override
     public void pause() {

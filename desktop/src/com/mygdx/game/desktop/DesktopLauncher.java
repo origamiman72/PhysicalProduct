@@ -21,8 +21,8 @@ public class DesktopLauncher {
 		//If window is resizable or not
 		config.resizable=true;
 		//Sets values the window's values for width and height
-		config.height = 1000;
-		config.width = 1000;
+		config.height = 1920;
+		config.width = 1080;
 		//FPS setting
 		config.foregroundFPS=60;
 		//VSync stuffs

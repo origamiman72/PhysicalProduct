@@ -7,8 +7,8 @@ public class MyGdxGame extends Game {
 	SpriteBatch batch;
 
 	//The values equate the width and height of the screen your code projects onto
-	public static final int V_WIDTH = 1000;
-	public static final int V_HEIGHT = 1000;
+	public static  int V_WIDTH = 1920;
+	public static  int V_HEIGHT = 1080;
 
 	@Override
 	public void create () {
