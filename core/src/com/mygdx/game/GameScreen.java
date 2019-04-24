@@ -38,7 +38,7 @@ public class GameScreen implements Screen {
 
 
         for(int i = 0; i < blocks.length; i++){
-            blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-500)/2, (LEVEL_HEIGHT-200)/2, 1, type.BLOCK, blockTexture, game.batch);
+            blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-constants.blockwidth)/2, (LEVEL_HEIGHT-constants.blockheight)/2, 1, type.BLOCK, blockTexture, game.batch);
         }
 
     }
@@ -59,6 +59,7 @@ public class GameScreen implements Screen {
         //Allows images to be transparent
         //game.batch.enableBlending();
 
+        game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         //Rendering happens between begin and end
         blocks[1].render();
