@@ -20,8 +20,12 @@ public class GameScreen implements Screen {
     private final int LEVEL_HEIGHT;
 
 
+
     Texture blockTexture = new Texture("mojave_dynamic_6.jpeg");
     Block[] blocks = new Block[constants.blockNumber];
+
+    int moveDownSpeed = 5;
+    int counter = 0;
 
     //Constructor
     public GameScreen(MyGdxGame game) {
@@ -36,10 +40,14 @@ public class GameScreen implements Screen {
         gameCam.update();
         gamePort = new FitViewport(LEVEL_WIDTH, LEVEL_HEIGHT, gameCam);
 
+        Block.xborder=LEVEL_WIDTH;
 
         for(int i = 0; i < blocks.length; i++){
-            blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-constants.blockwidth)/2, (LEVEL_HEIGHT-constants.blockheight)/2, 1, type.BLOCK, blockTexture, game.batch);
+            blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-constants.blockwidth)/2, (LEVEL_HEIGHT-constants.blockheight)/2, type.BLOCK, blockTexture, game.batch);
+            blocks[i].y = i * constants.blockheight -400;
         }
+
+        blocks[4].isActive=true;
 
     }
 
@@ -59,10 +67,13 @@ public class GameScreen implements Screen {
         //Allows images to be transparent
         //game.batch.enableBlending();
 
+        gameCam.update();
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         //Rendering happens between begin and end
-        blocks[1].render();
+        for(int i = 0; i<blocks.length; i++){
+            blocks[i].render();
+        }
         game.batch.end();
     }
 
@@ -86,8 +97,26 @@ public class GameScreen implements Screen {
 
     //Updates game using update method in each class
     public void update() {
-        blocks[1].isActive=true;
-        blocks[1].update();
+
+        for(int i=0; i<blocks.length; i++) {
+            if(blocks[i].isActive){
+                blocks[i].update();
+            }
+        }
+        if(Block.movetoNextTurn){
+            if(counter<200/moveDownSpeed) {
+                for (int i = 0; i < blocks.length; i++) {
+                    blocks[i].y -= moveDownSpeed;
+                }
+                counter++;
+            }else{
+                counter=0;
+                Block.movetoNextTurn=false;
+                moveDownSpeed=5;
+            }
+        }
+
+//        TODO: Make bottom Block move to top, tower size thinning
 
     }
 }
