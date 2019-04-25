@@ -19,6 +19,14 @@ public class Block extends entity{
     @Override
     public void handleCollision(entity e){
         System.out.println("yeetboi");
+        if(e.x>x) {
+            width=x+width-e.x;
+            x=e.x;
+        }
+        if(e.x<x) {
+            width=e.x+e.width-x;
+            x=e.x+e.width-width;
+        }
     }
 
     @Override
@@ -35,9 +43,7 @@ public class Block extends entity{
 
         if(isActive){
 
-//          NOTE: Decreased area in which active block can roam
-
-            if((x+width)<=(xborder-width/2) && x >= width/2) {
+            if((x+width)<=(xborder-constants.blockwidth/2) && x >= constants.blockwidth/2) {
                 x += xvel;
             }else{
                 xvel = -xvel;

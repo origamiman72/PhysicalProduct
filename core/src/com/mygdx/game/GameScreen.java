@@ -20,6 +20,8 @@ public class GameScreen implements Screen {
     private final int LEVEL_HEIGHT;
     int minimum;
     int blockunder = minimum-1;
+    int active;
+
 
     Texture testTexture = new Texture("mojave_dynamic_12.jpeg");
 
@@ -30,9 +32,12 @@ public class GameScreen implements Screen {
     int moveDownSpeed = 5;
     int counter = 0;
 
+    boolean gameOver=false;
+
     //Constructor
     public GameScreen(MyGdxGame game) {
         this.game = game;
+        active = blocks.length-1;
 
         //Equates variable values to that declared in MyGdxGame class
         LEVEL_WIDTH = MyGdxGame.V_WIDTH;
@@ -109,45 +114,50 @@ public class GameScreen implements Screen {
         }
         for(int i=0; i<blocks.length; i++){
             if(blocks[i].isActive){
+                active = i;
                 blockunder=i-1;
                 if(blockunder==-1){
                     blockunder=blocks.length-1;
                 }
-                blocks[blockunder].texture=testTexture;
+//                blocks[blockunder].texture=testTexture;
                 if(blocks[i].isCollide(blocks[blockunder])){
-                    blocks[i].handleCollision(blocks[blockunder]);
+                    gameOver=false;
                 }else{
-                    System.out.println("noboi");
+                   gameOver=true;
                 }
             }
         }
         if(Block.movetoNextTurn){
-            if(counter<constants.blockheight/moveDownSpeed) {
-                for (int i = 0; i < blocks.length; i++) {
-                    blocks[i].y -= moveDownSpeed;
+            if(!gameOver) {
+                blocks[active].handleCollision(blocks[blockunder]);
+                if (counter < constants.blockheight / moveDownSpeed) {
+                    for (int i = 0; i < blocks.length; i++) {
+                        blocks[i].y -= moveDownSpeed;
+                    }
+                    counter++;
+                } else {
+                    counter = 0;
+                    Block.movetoNextTurn = false;
+                    moveDownSpeed = 5;
+                    blocks[minimum].y = (blocks.length - 3) * constants.blockheight;
+                    blocks[minimum].isActive = true;
+                    blocks[minimum].width=blocks[active].width;
+
+                    if (minimum < blocks.length - 1) {
+                        minimum++;
+                    } else {
+                        minimum = 0;
+                    }
                 }
-                counter++;
-            }else{
-                counter=0;
-                Block.movetoNextTurn=false;
-                moveDownSpeed=5;
-                blocks[minimum].y = (blocks.length-3) * constants.blockheight;
-                blocks[minimum].isActive=true;
-
-                if(minimum<blocks.length-1){
-                    minimum++;
-                }else{
-                    minimum=0;
-                }
-
-
-
+            }
+            else{
+                System.out.println("gameOver");
             }
 
         }
 
 
-//        TODO: Tower size thinning, make collision detection affect game, Textures
+//        TODO: Tower size thinning animations, Textures
 
     }
 }
