@@ -19,7 +19,9 @@ public class GameScreen implements Screen {
     private final int LEVEL_WIDTH;
     private final int LEVEL_HEIGHT;
     int minimum;
+    int blockunder = minimum-1;
 
+    Texture testTexture = new Texture("mojave_dynamic_12.jpeg");
 
 
     Texture blockTexture = new Texture("mojave_dynamic_6.jpeg");
@@ -43,9 +45,10 @@ public class GameScreen implements Screen {
 
         Block.xborder=LEVEL_WIDTH;
 
+
         for(int i = 0; i < blocks.length; i++){
             blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-constants.blockwidth)/2, (LEVEL_HEIGHT-constants.blockheight)/2, type.BLOCK, blockTexture, game.batch);
-            blocks[i].y = i * constants.blockheight -400;
+            blocks[i].y = (i-2) * constants.blockheight;
         }
 
         blocks[4].isActive=true;
@@ -104,8 +107,22 @@ public class GameScreen implements Screen {
                 blocks[i].update();
             }
         }
+        for(int i=0; i<blocks.length; i++){
+            if(blocks[i].isActive){
+                blockunder=i-1;
+                if(blockunder==-1){
+                    blockunder=blocks.length-1;
+                }
+                blocks[blockunder].texture=testTexture;
+                if(blocks[i].isCollide(blocks[blockunder])){
+                    blocks[i].handleCollision(blocks[blockunder]);
+                }else{
+                    System.out.println("noboi");
+                }
+            }
+        }
         if(Block.movetoNextTurn){
-            if(counter<200/moveDownSpeed) {
+            if(counter<constants.blockheight/moveDownSpeed) {
                 for (int i = 0; i < blocks.length; i++) {
                     blocks[i].y -= moveDownSpeed;
                 }
@@ -114,21 +131,23 @@ public class GameScreen implements Screen {
                 counter=0;
                 Block.movetoNextTurn=false;
                 moveDownSpeed=5;
-                blocks[minimum].y = blocks.length * constants.blockheight - 600;
+                blocks[minimum].y = (blocks.length-3) * constants.blockheight;
                 blocks[minimum].isActive=true;
 
                 if(minimum<blocks.length-1){
                     minimum++;
-                }else {
+                }else{
                     minimum=0;
                 }
+
+
 
             }
 
         }
 
 
-//        TODO: Tower size thinning, check to make sure tower is on top of previous block, Textures
+//        TODO: Tower size thinning, make collision detection affect game, Textures
 
     }
 }

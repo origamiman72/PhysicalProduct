@@ -44,9 +44,7 @@ public abstract class entity {
     //METHODS
     public boolean isCollide(entity e){
         if(x < e.x + e.width &&
-                x + width > e.x &&
-                y < e.y + e.height &&
-                height + y > e.y)
+                x + width > e.x)
         {
             return true;
         } else{

@@ -18,6 +18,7 @@ public class Block extends entity{
 
     @Override
     public void handleCollision(entity e){
+        System.out.println("yeetboi");
     }
 
     @Override
