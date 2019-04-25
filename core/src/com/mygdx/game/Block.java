@@ -33,7 +33,10 @@ public class Block extends entity{
         }
 
         if(isActive){
-            if((x+width)<=(xborder-width/3) && x >= width/3) {
+
+//          NOTE: Decreased area in which active block can roam
+
+            if((x+width)<=(xborder-width/2) && x >= width/2) {
                 x += xvel;
             }else{
                 xvel = -xvel;

@@ -29,7 +29,7 @@ public class DesktopLauncher {
 		config.vSyncEnabled=true;
 
 		//Names the window it runs it
-		//config.title = "Flappy Cat";
+		config.title = "Tower Builder";
 		//Makes the window image icon desired image
 		//config.addIcon("pixelcat.jpg", Files.FileType.Internal);
 

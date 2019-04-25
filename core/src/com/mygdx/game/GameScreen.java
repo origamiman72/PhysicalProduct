@@ -18,6 +18,7 @@ public class GameScreen implements Screen {
     private Viewport gamePort;
     private final int LEVEL_WIDTH;
     private final int LEVEL_HEIGHT;
+    int minimum;
 
 
 
@@ -113,10 +114,21 @@ public class GameScreen implements Screen {
                 counter=0;
                 Block.movetoNextTurn=false;
                 moveDownSpeed=5;
+                blocks[minimum].y = blocks.length * constants.blockheight - 600;
+                blocks[minimum].isActive=true;
+
+                if(minimum<blocks.length-1){
+                    minimum++;
+                }else {
+                    minimum=0;
+                }
+
             }
+
         }
 
-//        TODO: Make bottom Block move to top, tower size thinning
+
+//        TODO: Tower size thinning, check to make sure tower is on top of previous block, Textures
 
     }
 }
