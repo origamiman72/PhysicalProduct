@@ -53,11 +53,11 @@ public class HUD {
 
     }
 
-    public void updateScore (String s, boolean gameOver){
+    public void updateScore (String s, boolean gameOver, int highScore){
         if(!gameOver) {
             score.setText("Score: " + s);
         }else{
-            score.setText("      Game Over" + "\n \n" + "Your Score was " + s + "\n \n"+ "         fat rip");
+            score.setText("      Game Over" + "\n \n" + " Your Score was " + s + "\n \n" + "The High Score is " + highScore);
         }
     }
 

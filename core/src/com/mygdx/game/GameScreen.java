@@ -2,10 +2,14 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Base64Coder;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -25,6 +29,10 @@ public class GameScreen implements Screen {
     int fivesPrevious =0;
     int fivesPassed =0;
     boolean scoreUpdated;
+    int highScore=0;
+
+    Preferences prefs;
+    Base64Coder coder;
 
     HUD hud;
     boolean renderWhite;
@@ -32,7 +40,7 @@ public class GameScreen implements Screen {
     Texture testTexture = new Texture("mojave_dynamic_12.jpeg");
 
 
-    Texture blockTexture = new Texture("mojave_dynamic_6.jpeg");
+    Texture blockTexture = new Texture("anner.jpg");
     Block[] blocks = new Block[constants.blockNumber];
 
     int moveDownSpeed = 5;
@@ -41,10 +49,16 @@ public class GameScreen implements Screen {
 
     boolean gameOver=false;
 
+    Json scores;
+
+
     Texture white = new Texture("white.jpg");
 
     //Constructor
     public GameScreen(MyGdxGame game) {
+
+        prefs = Gdx.app.getPreferences("game preferences");
+
         this.game = game;
         active = blocks.length-1;
         hud = new HUD(game.batch);
@@ -176,12 +190,13 @@ public class GameScreen implements Screen {
                 } else {
 
                     score++;
-                    hud.updateScore(Integer.toString(score), false);
+
+                    hud.updateScore(Integer.toString(score), false, highScore);
 
                     if(score%5==0){
                         fivesPassed++;
                         if(fivesPassed > fivesPrevious){
-                            Block.velx+=2;
+                            Block.velx+=constants.difficulty;
                         }
                         fivesPrevious++;
                     }
@@ -206,13 +221,47 @@ public class GameScreen implements Screen {
             }
             else{
                 System.out.println("gameOver");
-                hud.updateScore(Integer.toString(score), true);
-            }
+                try {
+                    highScore = Integer.parseInt(Base64Coder.decodeString(prefs.getString("highscore")));
+                }catch (Exception e){
+                    System.out.println("no previous high score");
+                }
+                if(score>highScore){
+                    highScore=score;
+                    prefs.putString("highscore", Base64Coder.encodeString(Integer.toString(highScore)));
+                    prefs.flush();
+                    System.out.println("hi");
+                }
+                highScore=Integer.parseInt(Base64Coder.decodeString(prefs.getString("highscore")));
+                hud.updateScore(Integer.toString(score), true, highScore);
 
+                if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+                    restart();
+                }
+
+            }
+        }
+    }
+
+    public void restart() {
+
+        Block.movetoNextTurn=false;
+        for(int i = 0; i < blocks.length; i++){
+            blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-constants.blockwidth)/2, (LEVEL_HEIGHT-constants.blockheight)/2, type.BLOCK, blockTexture, game.batch);
+            blocks[i].y = (i-(constants.blocksVisible)) * constants.blockheight;
+            blocks[i].isActive=false;
         }
 
-
-//        TODO: Tower size thinning animations, Textures, Main Menu, Improve Score HUD (?), Add Menu
+        blocks[4].isActive=true;
+        gameOver=false;
+        score=0;
+        fivesPassed=0;
+        fivesPrevious=0;
+        hud.updateScore(Integer.toString(score), gameOver, highScore);
+        minimum=0;
+        blockunder = minimum-1;
 
     }
 }
+
+//        TODO: Tower size thinning animations, Textures, Main Menu, Improve Score HUD (?), Add Menu

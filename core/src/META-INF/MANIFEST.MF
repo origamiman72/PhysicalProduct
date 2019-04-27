@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Class-Path: lwjgl-platform-2.9.2-natives-windows.jar gdx-box2d-gwt-1.9
+ .9-sources.jar javax.servlet-api-3.1.0.jar lwjgl-2.9.2.jar jutils-1.0
+ .0.jar gwt-user-2.8.0.jar validation-api-1.0.0.GA.jar gdx-backend-and
+ roid-1.9.9.jar jinput-2.0.5.jar gdx-backend-gwt-1.9.9.jar gdx-1.9.9.j
+ ar jsinterop-annotations-1.0.1.jar jsinterop-annotations-1.0.1-source
+ s.jar sac-1.3.jar jinput-platform-2.0.5-natives-windows.jar core-1.0.
+ jar gdx-backend-lwjgl-1.9.9.jar gdx-1.9.9-sources.jar gdx-box2d-1.9.9
+ -sources.jar gdx-backend-gwt-1.9.9-sources.jar lwjgl_util-2.9.2.jar j
+ input-platform-2.0.5-natives-osx.jar lwjgl-platform-2.9.2-natives-osx
+ .jar jorbis-0.0.17.jar jlayer-1.0.1-gdx.jar gdx-box2d-1.9.9.jar valid
+ ation-api-1.0.0.GA-sources.jar gdx-box2d-1.9.9.jar lwjgl-platform-2.9
+ .2-natives-linux.jar gdx-platform-1.9.9-natives-desktop.jar gdx-1.9.9
+ .jar jinput-platform-2.0.5-natives-linux.jar gdx-box2d-platform-1.9.9
+ -natives-desktop.jar
+Main-Class: com.mygdx.game.desktop.DesktopLauncher
+

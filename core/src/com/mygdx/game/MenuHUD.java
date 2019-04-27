@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -22,11 +23,20 @@ public class MenuHUD {
 
     Stage stage;
     Viewport viewport;
+    Table displayTable;
+    Label title;
+    Label title2;
+    Label title3;
 
-    Label score;
     int scorenumber=0;
+    Vector2 mouseScreenPosition;
+    Vector2 startmouseLocalPosition;
+
+
 
     public MenuHUD(SpriteBatch batch){
+        mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+
 
         BitmapFont pixelFont = new BitmapFont(
                 Gdx.files.internal("pixelOperatorHB.fnt"),
@@ -36,28 +46,53 @@ public class MenuHUD {
         viewport = new ScreenViewport(new OrthographicCamera());
         stage = new Stage(viewport, batch);
 
-        //Display Table (score)
-        Table displayTable = new Table();
-        displayTable.padTop(100);
-        displayTable.top();
+//        Display Table (score)
+        displayTable = new Table();
         displayTable.setFillParent(true);
+        displayTable.padTop(400);
+        displayTable.top();
 
-        //Labels take in: STRING, LabelStyle(Font,Color)
-        score = new Label("Score: " + scorenumber, new Label.LabelStyle(pixelFont, Color.WHITE));
+//        Labels take in: STRING, LabelStyle(Font,Color)
+        title = new Label("CEP Tower Builder", new Label.LabelStyle(pixelFont, Color.WHITE));
+        title2 = new Label("START", new Label.LabelStyle(pixelFont, Color.WHITE));
+        title3 = new Label("Help", new Label.LabelStyle(pixelFont, Color.WHITE));
 
-        score.setFontScale(2F);
+        title.setFontScale(2F);
+        displayTable.add(title).expandX();
 
-        displayTable.add(score);
+        displayTable.row();
+        displayTable.center();
+        displayTable.add(title2).expand().spaceTop(200).uniform();
+
+
+        displayTable.row();
+        displayTable.center();
+        displayTable.add(title3).expand().uniform();
+        displayTable.padBottom(300);
+        displayTable.setHeight(500);
+
 
         stage.addActor(displayTable);
 
+//        displayTable.setDebug(true);
+
     }
 
-    public void updateScore (String s, boolean gameOver){
-        if(!gameOver) {
-            score.setText("Score: " + s);
+    public void updateMenu (){
+
+        mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        startmouseLocalPosition = new Vector2(title2.screenToLocalCoordinates(mouseScreenPosition));
+
+//        System.out.println(title2.hit(mouseLocalPosition.x, mouseLocalPosition.y, false));
+        if(title2.hit(startmouseLocalPosition.x, startmouseLocalPosition.y, true) !=null){
+            title2.setFontScale(2F);
+            System.out.println("yeet");
+            if(Gdx.input.justTouched()){
+                MainMenu.game.setScreen(new GameScreen(MainMenu.game));
+            }
+
         }else{
-            score.setText("      Game Over" + "\n \n" + "Your Score was " + s + "\n \n"+ "         fat rip");
+            title2.setFontScale(1F);
         }
     }
 

@@ -11,13 +11,13 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class MainMenu implements Screen {
 
     //Fields
-    private MyGdxGame game;
+    static MyGdxGame game;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     private final int LEVEL_WIDTH;
     private final int LEVEL_HEIGHT;
 
-
+    MenuHUD menu;
 
     //Constructor
     public MainMenu(MyGdxGame game) {
@@ -27,10 +27,11 @@ public class MainMenu implements Screen {
         LEVEL_WIDTH = MyGdxGame.V_WIDTH;
         LEVEL_HEIGHT = MyGdxGame.V_HEIGHT;
 
-
-
         gameCam = new OrthographicCamera();
         gamePort = new ExtendViewport(LEVEL_WIDTH, LEVEL_HEIGHT, gameCam);
+
+         menu = new MenuHUD(game.batch);
+
     }
 
     //Methods
@@ -53,6 +54,8 @@ public class MainMenu implements Screen {
         //Rendering happens between begin and end
 
         game.batch.end();
+        game.batch.setProjectionMatrix(menu.stage.getCamera().combined);
+        menu.stage.draw();
     }
 
     //Extra methods provided by Screen implement
@@ -74,6 +77,6 @@ public class MainMenu implements Screen {
 
     //Updates game using update method in each class
     public void update() {
-
+        menu.updateMenu();
     }
 }

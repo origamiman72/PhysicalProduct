@@ -7,4 +7,5 @@ public class constants {
     //Change blocksVisibleC
     static int blocksVisibleC = 3;
     static int blocksVisible = blockNumber - 1 - blocksVisibleC;
+    static int difficulty = 3;
 }

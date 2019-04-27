@@ -51,6 +51,7 @@ public abstract class entity {
             return false;
         }
     }
+
     public abstract void handleCollision(entity e);
 
     //ABSTRACT METHODS
