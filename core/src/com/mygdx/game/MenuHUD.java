@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 //import com.badlogic.gdx.utils.viewport.ExtendViewport;
 //import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -22,29 +24,25 @@ import java.io.File;
 public class MenuHUD {
 
     Stage stage;
-    Viewport viewport;
     Table displayTable;
     Label title;
     Label title2;
     Label title3;
 
-    int scorenumber=0;
+    int selectedOption=0;
+    int numberOfValues=2;
+
     Vector2 mouseScreenPosition;
     Vector2 startmouseLocalPosition;
+    Vector2 helpmouseLocalPosition;
 
-
+    static boolean showHighScores;
+    static boolean showMenuHUD=true;
 
     public MenuHUD(SpriteBatch batch){
         mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
 
-
-        BitmapFont pixelFont = new BitmapFont(
-                Gdx.files.internal("pixelOperatorHB.fnt"),
-                false
-        );
-
-        viewport = new ScreenViewport(new OrthographicCamera());
-        stage = new Stage(viewport, batch);
+        stage = new Stage(MyGdxGame.menuViewport, batch);
 
 //        Display Table (score)
         displayTable = new Table();
@@ -53,9 +51,9 @@ public class MenuHUD {
         displayTable.top();
 
 //        Labels take in: STRING, LabelStyle(Font,Color)
-        title = new Label("CEP Tower Builder", new Label.LabelStyle(pixelFont, Color.WHITE));
-        title2 = new Label("START", new Label.LabelStyle(pixelFont, Color.WHITE));
-        title3 = new Label("Help", new Label.LabelStyle(pixelFont, Color.WHITE));
+        title = new Label("CEP Tower Builder", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
+        title2 = new Label("START", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
+        title3 = new Label("High Scores", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
 
         title.setFontScale(2F);
         displayTable.add(title).expandX();
@@ -69,7 +67,7 @@ public class MenuHUD {
         displayTable.center();
         displayTable.add(title3).expand().uniform();
         displayTable.padBottom(300);
-        displayTable.setHeight(500);
+//        displayTable.setHeight(500);
 
 
         stage.addActor(displayTable);
@@ -80,20 +78,52 @@ public class MenuHUD {
 
     public void updateMenu (){
 
-        mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        mouseScreenPosition.set(Gdx.input.getX(), Gdx.input.getY());
         startmouseLocalPosition = new Vector2(title2.screenToLocalCoordinates(mouseScreenPosition));
+        mouseScreenPosition.set(Gdx.input.getX(), Gdx.input.getY());
+        helpmouseLocalPosition = new Vector2(title3.screenToLocalCoordinates(mouseScreenPosition));
+
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)&&selectedOption!=numberOfValues){
+            selectedOption++;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && selectedOption!=1){
+            selectedOption--;
+            if(selectedOption==-1){
+                selectedOption=numberOfValues;
+            }
+        }
+
+        if(title2.hit(startmouseLocalPosition.x, startmouseLocalPosition.y, true) !=null || title3.hit(helpmouseLocalPosition.x, helpmouseLocalPosition.y, true) !=null){
+            selectedOption=0;
+        }
 
 //        System.out.println(title2.hit(mouseLocalPosition.x, mouseLocalPosition.y, false));
-        if(title2.hit(startmouseLocalPosition.x, startmouseLocalPosition.y, true) !=null){
+        if(title2.hit(startmouseLocalPosition.x, startmouseLocalPosition.y, true) !=null || selectedOption==1){
             title2.setFontScale(2F);
-            System.out.println("yeet");
-            if(Gdx.input.justTouched()){
+//            System.out.println("yeet");
+            if(Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
                 MainMenu.game.setScreen(new GameScreen(MainMenu.game));
             }
-
         }else{
             title2.setFontScale(1F);
         }
+
+        if(title3.hit(helpmouseLocalPosition.x, helpmouseLocalPosition.y, true) !=null || selectedOption==2){
+            title3.setFontScale(2F);
+//            System.out.println("yeet");
+            if(Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+//                MainMenu.game.setScreen(new GameScreen(MainMenu.game));
+                System.out.println("help selected");
+                showHighScores=true;
+                showMenuHUD=false;
+            }
+
+        }else{
+            title3.setFontScale(1F);
+        }
+
+
     }
 
 }

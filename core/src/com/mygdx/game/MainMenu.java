@@ -18,6 +18,7 @@ public class MainMenu implements Screen {
     private final int LEVEL_HEIGHT;
 
     MenuHUD menu;
+    HighScoresHUD highScoresHUD;
 
     //Constructor
     public MainMenu(MyGdxGame game) {
@@ -30,7 +31,8 @@ public class MainMenu implements Screen {
         gameCam = new OrthographicCamera();
         gamePort = new ExtendViewport(LEVEL_WIDTH, LEVEL_HEIGHT, gameCam);
 
-         menu = new MenuHUD(game.batch);
+        menu = new MenuHUD(game.batch);
+        highScoresHUD = new HighScoresHUD(game.batch);
 
     }
 
@@ -54,13 +56,21 @@ public class MainMenu implements Screen {
         //Rendering happens between begin and end
 
         game.batch.end();
-        game.batch.setProjectionMatrix(menu.stage.getCamera().combined);
-        menu.stage.draw();
+
+        if(MenuHUD.showMenuHUD) {
+            game.batch.setProjectionMatrix(menu.stage.getCamera().combined);
+            menu.stage.draw();
+        }
+        if(MenuHUD.showHighScores){
+            game.batch.setProjectionMatrix(highScoresHUD.stage.getCamera().combined);
+            highScoresHUD.stage.draw();
+        }
     }
 
     //Extra methods provided by Screen implement
     @Override
     public void resize(int width, int height) {
+       MyGdxGame.menuViewport.update(width, height);
     }
     @Override
     public void pause() {
@@ -78,5 +88,6 @@ public class MainMenu implements Screen {
     //Updates game using update method in each class
     public void update() {
         menu.updateMenu();
+        highScoresHUD.updateHighScores();
     }
 }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 //import com.badlogic.gdx.utils.viewport.ExtendViewport;
 //import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -21,20 +22,15 @@ import java.io.File;
 public class HUD {
 
     Stage stage;
-    Viewport viewport;
-
     Label score;
+    Label scoreWas;
     int scorenumber=0;
+    Label restart;
+    Label highscore;
 
     public HUD(SpriteBatch batch){
 
-        BitmapFont pixelFont = new BitmapFont(
-                Gdx.files.internal("pixelOperatorHB.fnt"),
-                false
-        );
-
-        viewport = new ScreenViewport(new OrthographicCamera());
-        stage = new Stage(viewport, batch);
+        stage = new Stage(MyGdxGame.menuViewport, batch);
 
         //Display Table (score)
         Table displayTable = new Table();
@@ -43,11 +39,25 @@ public class HUD {
         displayTable.setFillParent(true);
 
         //Labels take in: STRING, LabelStyle(Font,Color)
-        score = new Label("Score: " + scorenumber, new Label.LabelStyle(pixelFont, Color.WHITE));
-
+        score = new Label("Score: " + scorenumber, new Label.LabelStyle(constants.pixelFont, Color.WHITE));
+        scoreWas = new Label("", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
+        restart = new Label("", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
+        highscore = new Label("", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
         score.setFontScale(2F);
+        scoreWas.setFontScale(1.5F);
+        restart.setFontScale(1.5F);
+        highscore.setFontScale(1.4F);
 
         displayTable.add(score);
+
+        displayTable.row();
+        displayTable.add(scoreWas).spaceTop(50);
+
+        displayTable.row();
+        displayTable.add(highscore).spaceTop(50);
+
+        displayTable.row();
+        displayTable.add(restart).spaceTop(200);
 
         stage.addActor(displayTable);
 
@@ -56,8 +66,14 @@ public class HUD {
     public void updateScore (String s, boolean gameOver, int highScore){
         if(!gameOver) {
             score.setText("Score: " + s);
+            scoreWas.setText("");
+            restart.setText("");
+            highscore.setText("");
         }else{
-            score.setText("      Game Over" + "\n \n" + " Your Score was " + s + "\n \n" + "The High Score is " + highScore);
+            score.setText("Game Over");
+            scoreWas.setText("Your score was " + s);
+            highscore.setText("The High Score is " + highScore);
+            restart.setText("Press Enter to Restart");
         }
     }
 

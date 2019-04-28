@@ -29,18 +29,24 @@ public class GameScreen implements Screen {
     int fivesPrevious =0;
     int fivesPassed =0;
     boolean scoreUpdated;
-    int highScore=0;
+    static int highScore=0;
 
-    Preferences prefs;
-    Base64Coder coder;
+    RestartHUD restartHUD;
+
+    static Preferences prefs = Gdx.app.getPreferences("game preferences");
+
+    boolean restartInProgress=true;
+
+    int counter2=0;
+
+    Texture[] blocktextures = Skin.getBlocktextures();
 
     HUD hud;
     boolean renderWhite;
+    boolean renderRestartWhite=false;
 
     Texture testTexture = new Texture("mojave_dynamic_12.jpeg");
 
-
-    Texture blockTexture = new Texture("anner.jpg");
     Block[] blocks = new Block[constants.blockNumber];
 
     int moveDownSpeed = 5;
@@ -49,18 +55,16 @@ public class GameScreen implements Screen {
 
     boolean gameOver=false;
 
-    Json scores;
-
 
     Texture white = new Texture("white.jpg");
 
     //Constructor
     public GameScreen(MyGdxGame game) {
 
-        prefs = Gdx.app.getPreferences("game preferences");
 
         this.game = game;
         active = blocks.length-1;
+        restartHUD = new RestartHUD(game.batch);
         hud = new HUD(game.batch);
 
         //Equates variable values to that declared in MyGdxGame class
@@ -76,11 +80,13 @@ public class GameScreen implements Screen {
 
 
         for(int i = 0; i < blocks.length; i++){
-            blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-constants.blockwidth)/2, (LEVEL_HEIGHT-constants.blockheight)/2, type.BLOCK, blockTexture, game.batch);
+            blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-constants.blockwidth)/2, (LEVEL_HEIGHT-constants.blockheight)/2, type.BLOCK, blocktextures[i], game.batch);
             blocks[i].y = (i-(constants.blocksVisible)) * constants.blockheight;
         }
 
         blocks[4].isActive=true;
+
+        restart();
 
     }
 
@@ -110,15 +116,25 @@ public class GameScreen implements Screen {
         if(renderWhite){
             game.batch.draw(white, blocks[active].x, blocks[active].y, blocks[active].width, blocks[active].height);
         }
+        if(restartInProgress){
+            game.batch.draw(white, 0, 0, LEVEL_WIDTH, LEVEL_HEIGHT);
+        }
         game.batch.end();
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+        if(!restartInProgress) {
+            game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+            hud.stage.draw();
+        }else{
+            game.batch.setProjectionMatrix(restartHUD.stage.getCamera().combined);
+            restartHUD.stage.draw();
+        }
+
     }
 
     //Extra methods provided by Screen implement
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
+        MyGdxGame.menuViewport.update(width, height);
     }
     @Override
     public void pause() {
@@ -208,6 +224,7 @@ public class GameScreen implements Screen {
                     blocks[minimum].y = (blocks.length - constants.blocksVisible - 1) * constants.blockheight;
                     blocks[minimum].isActive = true;
                     blocks[minimum].width=blocks[active].width;
+                    blocks[minimum].texture = blocktextures[(int)Math.round(Math.random()*blocktextures.length)];
                     blocks[minimum].directionChosen=false;
                     blocks[minimum].x = (int)Math.round((Math.random()*(LEVEL_WIDTH*.3))+(LEVEL_WIDTH*.35-(blocks[minimum].width/2)));
                     ranOnce=false;
@@ -236,21 +253,28 @@ public class GameScreen implements Screen {
                 hud.updateScore(Integer.toString(score), true, highScore);
 
                 if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
-                    restart();
+                    restartInProgress=true;
                 }
-
             }
+
+        }
+        if (restartInProgress) {
+            restart();
         }
     }
 
     public void restart() {
 
+        Block.velx=5;
         Block.movetoNextTurn=false;
         for(int i = 0; i < blocks.length; i++){
-            blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-constants.blockwidth)/2, (LEVEL_HEIGHT-constants.blockheight)/2, type.BLOCK, blockTexture, game.batch);
+            blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-constants.blockwidth)/2, (LEVEL_HEIGHT-constants.blockheight)/2, type.BLOCK, blocktextures[i], game.batch);
             blocks[i].y = (i-(constants.blocksVisible)) * constants.blockheight;
             blocks[i].isActive=false;
+            blocks[i].xvel=Block.velx;
         }
+
+
 
         blocks[4].isActive=true;
         gameOver=false;
@@ -261,7 +285,19 @@ public class GameScreen implements Screen {
         minimum=0;
         blockunder = minimum-1;
 
+        if(counter<70) {
+           counter++;
+            System.out.println(counter);
+        }else{
+            restartInProgress=false;
+            counter=0;
+        }
+
+
+
     }
 }
 
-//        TODO: Tower size thinning animations, Textures, Main Menu, Improve Score HUD (?), Add Menu
+//        TODO: Tower size thinning animations, Textures, Improve Score HUD (?), Add Menu functions, Sounds
+//        TODO: Support texture packs, generalize textures class, maybe skins
+//        TODO: Fix bug where clicking during restart menu crashes game, high score menu

@@ -1,0 +1,13 @@
+8:04 am 4.27 - worked on generalizing textures
+8:10 am - took breakfast break
+8:45 am - returned, continued generalizing textures
+8:53 am - proof of concept texture pack working, started working on high score HUD
+9:41 am - bug discovered with menu stretching
+10:03 am - Fixed aforementioned bug, generalized screencam and menuViewport into  MyGdxGame
+
+3:55 pm - Started working on bug where high scores wouldnt show in her high score menu
+3:57 pm - Fixed aforementioned bug
+
+6:30 pm - Started working on textures
+7:30 pm - Finished woring on textures
+7:50 pm - started working on implementing random textures
