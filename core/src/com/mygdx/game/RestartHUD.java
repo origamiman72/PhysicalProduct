@@ -14,6 +14,7 @@ public class RestartHUD {
     Stage stage;
     Label restart;
     Table displayTable;
+    static boolean renderHUD=true;
 
     public RestartHUD(SpriteBatch batch){
 

@@ -1,7 +1,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class constants {
     static int blockNumber = 5;
@@ -16,4 +19,9 @@ public class constants {
             Gdx.files.internal("pixelOperatorHB.fnt"),
             false
     );
+    static BitmapFont pixelFontborder = new BitmapFont(
+            Gdx.files.internal("pixelOperatorHBborder.fnt"),
+            false
+    );
+
 }

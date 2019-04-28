@@ -51,9 +51,9 @@ public class MenuHUD {
         displayTable.top();
 
 //        Labels take in: STRING, LabelStyle(Font,Color)
-        title = new Label("CEP Tower Builder", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
-        title2 = new Label("START", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
-        title3 = new Label("High Scores", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
+        title = new Label("CEP Tower Builder", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
+        title2 = new Label("START", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
+        title3 = new Label("High Scores", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
 
         title.setFontScale(2F);
         displayTable.add(title).expandX();
@@ -83,44 +83,45 @@ public class MenuHUD {
         mouseScreenPosition.set(Gdx.input.getX(), Gdx.input.getY());
         helpmouseLocalPosition = new Vector2(title3.screenToLocalCoordinates(mouseScreenPosition));
 
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)&&selectedOption!=numberOfValues){
-            selectedOption++;
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && selectedOption!=1){
-            selectedOption--;
-            if(selectedOption==-1){
-                selectedOption=numberOfValues;
+        if(showMenuHUD) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) && selectedOption != numberOfValues) {
+                selectedOption++;
             }
-        }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && selectedOption != 1) {
+                selectedOption--;
+                if (selectedOption == -1) {
+                    selectedOption = numberOfValues;
+                }
+            }
 
-        if(title2.hit(startmouseLocalPosition.x, startmouseLocalPosition.y, true) !=null || title3.hit(helpmouseLocalPosition.x, helpmouseLocalPosition.y, true) !=null){
-            selectedOption=0;
-        }
+            if (title2.hit(startmouseLocalPosition.x, startmouseLocalPosition.y, true) != null || title3.hit(helpmouseLocalPosition.x, helpmouseLocalPosition.y, true) != null) {
+                selectedOption = 0;
+            }
 
 //        System.out.println(title2.hit(mouseLocalPosition.x, mouseLocalPosition.y, false));
-        if(title2.hit(startmouseLocalPosition.x, startmouseLocalPosition.y, true) !=null || selectedOption==1){
-            title2.setFontScale(2F);
+            if (title2.hit(startmouseLocalPosition.x, startmouseLocalPosition.y, true) != null || selectedOption == 1) {
+                title2.setFontScale(2F);
 //            System.out.println("yeet");
-            if(Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
-                MainMenu.game.setScreen(new GameScreen(MainMenu.game));
+                if (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+                    MainMenu.game.setScreen(new GameScreen(MainMenu.game));
+                }
+            } else {
+                title2.setFontScale(1F);
             }
-        }else{
-            title2.setFontScale(1F);
-        }
 
-        if(title3.hit(helpmouseLocalPosition.x, helpmouseLocalPosition.y, true) !=null || selectedOption==2){
-            title3.setFontScale(2F);
+            if (title3.hit(helpmouseLocalPosition.x, helpmouseLocalPosition.y, true) != null || selectedOption == 2) {
+                title3.setFontScale(2F);
 //            System.out.println("yeet");
-            if(Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+                if (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 //                MainMenu.game.setScreen(new GameScreen(MainMenu.game));
-                System.out.println("help selected");
-                showHighScores=true;
-                showMenuHUD=false;
-            }
+                    System.out.println("help selected");
+                    showHighScores = true;
+                    showMenuHUD = false;
+                }
 
-        }else{
-            title3.setFontScale(1F);
+            } else {
+                title3.setFontScale(1F);
+            }
         }
 
 

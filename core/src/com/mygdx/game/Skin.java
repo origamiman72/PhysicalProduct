@@ -9,6 +9,9 @@ import java.io.File;
 public class Skin {
 
     static Texture[] blocktextures = new Texture[5];
+    static Texture background = new Texture("background.jpg");
+    static Texture backgroundground = new Texture("backgroundground.png");
+
 
     public static Texture[] getBlocktextures() {
         for(int i =1; i<=blocktextures.length; i++ ) {

@@ -39,10 +39,10 @@ public class HUD {
         displayTable.setFillParent(true);
 
         //Labels take in: STRING, LabelStyle(Font,Color)
-        score = new Label("Score: " + scorenumber, new Label.LabelStyle(constants.pixelFont, Color.WHITE));
-        scoreWas = new Label("", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
-        restart = new Label("", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
-        highscore = new Label("", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
+        score = new Label("Score: " + scorenumber, new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
+        scoreWas = new Label("", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
+        restart = new Label("", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
+        highscore = new Label("", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
         score.setFontScale(2F);
         scoreWas.setFontScale(1.5F);
         restart.setFontScale(1.5F);
