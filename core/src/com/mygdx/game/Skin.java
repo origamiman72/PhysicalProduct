@@ -16,10 +16,10 @@ public class Skin {
     public static Texture[] getBlocktextures() {
         for(int i =1; i<=blocktextures.length; i++ ) {
             try {
-                blocktextures[i-1] = new Texture(Gdx.files.local("blocks"+ File.separator+"BlockTexture" + i + ".png"));
+                blocktextures[i-1] = new Texture(Gdx.files.internal("blocks"+ File.separator+"BlockTexture" + i + ".png"));
             }catch (Exception e){
                 System.out.println("No external Texture pack");
-                blocktextures[i-1] = new Texture(Gdx.files.local("blocktextureb.jpg"));
+                blocktextures[i-1] = new Texture(Gdx.files.internal("blocktextureb.jpeg"));
             }
         }
         return blocktextures;

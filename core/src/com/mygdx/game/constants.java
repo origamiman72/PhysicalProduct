@@ -13,7 +13,7 @@ public class constants {
     //Change blocksVisibleC
     static int blocksVisibleC = 3;
     static int blocksVisible = blockNumber - 1 - blocksVisibleC;
-    static int difficulty = 3;
+    static int difficulty = 2;
 
     static BitmapFont pixelFont = new BitmapFont(
             Gdx.files.internal("pixelOperatorHB.fnt"),
