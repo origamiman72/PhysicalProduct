@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -44,8 +45,8 @@ public class HighScoresHUD {
         displayTable.top();
 
 //        Labels take in: STRING, LabelStyle(Font,Color)
-        highscoretext = new Label("High Scores", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
-        highScore = new Label("The High Score is 0", new Label.LabelStyle(constants.pixelFont, Color.WHITE));
+        highscoretext = new Label("High Scores", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
+        highScore = new Label("The High Score is 0", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
 
         highscoretext.setFontScale(2F);
         highScore.setFontScale(1.5F);
@@ -74,5 +75,10 @@ public class HighScoresHUD {
             highscore="0";
         }
         highScore.setText("The High Score is " +highscore);
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            MenuHUD.showHighScores=false;
+            MenuHUD.showMenuHUD=true;
+            System.out.println("yeat");
+        }
     }
 }

@@ -17,6 +17,10 @@ public class MainMenu implements Screen {
     private final int LEVEL_WIDTH;
     private final int LEVEL_HEIGHT;
 
+    Background background;
+    Background background2;
+
+
     MenuHUD menu;
     HighScoresHUD highScoresHUD;
 
@@ -27,6 +31,9 @@ public class MainMenu implements Screen {
         //Equates variable values to that declared in MyGdxGame class
         LEVEL_WIDTH = MyGdxGame.V_WIDTH;
         LEVEL_HEIGHT = MyGdxGame.V_HEIGHT;
+        background=new Background(0, 0, LEVEL_WIDTH, LEVEL_HEIGHT, Skin.background);
+        background2=new Background(0, LEVEL_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT, Skin.background);
+
 
         gameCam = new OrthographicCamera();
         gamePort = new ExtendViewport(LEVEL_WIDTH, LEVEL_HEIGHT, gameCam);
@@ -53,6 +60,8 @@ public class MainMenu implements Screen {
         game.batch.enableBlending();
 
         game.batch.begin();
+        background.render(game.batch);
+        background2.render(game.batch);
         //Rendering happens between begin and end
 
         game.batch.end();
@@ -87,6 +96,8 @@ public class MainMenu implements Screen {
 
     //Updates game using update method in each class
     public void update() {
+        background.update(4);
+        background2.update(4);
         menu.updateMenu();
         highScoresHUD.updateHighScores();
     }
