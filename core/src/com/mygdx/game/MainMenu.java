@@ -29,6 +29,8 @@ public class MainMenu implements Screen {
         this.game = game;
 
         //Equates variable values to that declared in MyGdxGame class
+//        MyGdxGame.V_HEIGHT=Gdx.graphics.getHeight();
+//        System.out.println("x fam" + MyGdxGame.V_HEIGHT);
         LEVEL_WIDTH = MyGdxGame.V_WIDTH;
         LEVEL_HEIGHT = MyGdxGame.V_HEIGHT;
         background=new Background(0, 0, LEVEL_WIDTH, LEVEL_HEIGHT, Skin.background);
@@ -40,6 +42,7 @@ public class MainMenu implements Screen {
 
         menu = new MenuHUD(game.batch);
         highScoresHUD = new HighScoresHUD(game.batch);
+        Sounds.playbg();
 
     }
 

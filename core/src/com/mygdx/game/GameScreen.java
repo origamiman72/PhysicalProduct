@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen implements Screen {
@@ -67,7 +69,6 @@ public class GameScreen implements Screen {
         active = blocks.length-1;
         restartHUD = new RestartHUD(game.batch);
         hud = new HUD(game.batch);
-
         //Equates variable values to that declared in MyGdxGame class
         LEVEL_WIDTH = MyGdxGame.V_WIDTH;
         LEVEL_HEIGHT = MyGdxGame.V_HEIGHT;
@@ -79,7 +80,8 @@ public class GameScreen implements Screen {
         gameCam = new OrthographicCamera();
         gameCam.setToOrtho(false, LEVEL_WIDTH, LEVEL_HEIGHT);
         gameCam.update();
-        gamePort = new FitViewport(LEVEL_WIDTH, LEVEL_HEIGHT, gameCam);
+        gamePort = new FitViewport(LEVEL_WIDTH, LEVEL_HEIGHT,gameCam);
+//        System.out.println(Gdx.graphics.getWidth()+" ,xy "+Gdx.graphics.getHeight());
 
         Block.xborder=LEVEL_WIDTH;
 
@@ -117,8 +119,10 @@ public class GameScreen implements Screen {
         //Rendering happens between begin and end
         background.render(game.batch);
         background2.render(game.batch);
-        for(int i = 0; i<blocks.length; i++){
-            blocks[i].render();
+        if(!restartInProgress){
+            for(Block cube : blocks){
+                cube.render();
+            }
         }
         if(renderWhite){
             game.batch.draw(white, blocks[active].x, blocks[active].y, blocks[active].width, blocks[active].height);
@@ -163,11 +167,12 @@ public class GameScreen implements Screen {
 
         if (!restartInProgress) {
 //        Blocks update
-            for (int i = 0; i < blocks.length; i++) {
-                if (blocks[i].isActive) {
-                    blocks[i].update();
+            for (Block cube : blocks) {
+                if (cube.isActive) {
+                    cube.update();
                 }
             }
+            Sounds.playbg();
         }
 
 
@@ -198,8 +203,8 @@ public class GameScreen implements Screen {
 
 //                Moves Blocks Down
                 if (counter < constants.blockheight / moveDownSpeed) {
-                    for (int i = 0; i < blocks.length; i++) {
-                        blocks[i].y -= moveDownSpeed;
+                    for (Block cube : blocks) {
+                        cube.y -= moveDownSpeed;
                     }
                     background.update(moveDownSpeed);
                     background2.update(moveDownSpeed);
@@ -283,6 +288,7 @@ public class GameScreen implements Screen {
     }
 
     public void restart() {
+        Sounds.stopbg();
 
         Block.velx=5;
         Block.movetoNextTurn=false;

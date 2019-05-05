@@ -19,6 +19,7 @@ public class MyGdxGame extends Game {
 
 	@Override
 	public void create () {
+		V_HEIGHT=Gdx.graphics.getHeight();
 		screenCam = new OrthographicCamera();
 		screenCam.setToOrtho(false, V_WIDTH, V_HEIGHT);
 		menuViewport = new FitViewport(V_WIDTH, V_HEIGHT, screenCam);

@@ -103,6 +103,7 @@ public class MenuHUD {
                 title2.setFontScale(2F);
 //            System.out.println("yeet");
                 if (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+                    Sounds.stopbg();
                     MainMenu.game.setScreen(new GameScreen(MainMenu.game));
                 }
             } else {
