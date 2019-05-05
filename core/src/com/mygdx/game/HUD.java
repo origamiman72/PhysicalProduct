@@ -73,7 +73,7 @@ public class HUD {
             score.setText("Game Over");
             scoreWas.setText("Your score was " + s);
             highscore.setText("The High Score is " + highScore);
-            restart.setText("Press Enter to Restart");
+            restart.setText("Touch to Restart");
         }
     }
 

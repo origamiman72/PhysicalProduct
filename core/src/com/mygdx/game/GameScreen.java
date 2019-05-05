@@ -25,6 +25,8 @@ public class GameScreen implements Screen {
     int blockunder = minimum-1;
     int active;
 
+    int touchcounter = 0;
+
     int score;
     int fivesPrevious =0;
     int fivesPassed =0;
@@ -264,8 +266,13 @@ public class GameScreen implements Screen {
                 highScore=Integer.parseInt(Base64Coder.decodeString(prefs.getString("highscore")));
                 hud.updateScore(Integer.toString(score), true, highScore);
 
-                if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
-                    restartInProgress=true;
+                if(touchcounter>0) {
+                    if (Gdx.input.justTouched()) {
+                        restartInProgress = true;
+                        touchcounter=0;
+                    }
+                }else {
+                    touchcounter++;
                 }
             }
 
