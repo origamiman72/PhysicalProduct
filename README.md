@@ -21,13 +21,18 @@ Latest Version:<br />
 <summary>Changelog:</summary><p>
 
   * Desktop
+    * v0.1a
+      * Created desktop version
   * Android
     * v0.3a
       * Added back to menu buttons
       * Increased perfect block placement leniency
+      * Added dummy options button to prepare for settings menu
     * v0.2a
       * Added Aspect Ratio scaling
       * Added background music
+    * v0.1a
+      * Created Android Version
 
 
 </p></details>
