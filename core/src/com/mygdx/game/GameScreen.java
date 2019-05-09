@@ -39,13 +39,14 @@ public class GameScreen implements Screen {
 
     static Preferences prefs = Gdx.app.getPreferences("game preferences");
 
-    boolean restartInProgress=true;
+    static boolean restartInProgress=true;
 
     int counter2=0;
 
     Texture[] blocktextures = Skin.getBlocktextures();
 
     HUD hud;
+    GameOverHUD gameOverHUD;
     boolean renderWhite;
     boolean renderRestartWhite=false;
 
@@ -58,6 +59,7 @@ public class GameScreen implements Screen {
     boolean ranOnce=false;
     Background background2;
     boolean gameOver=false;
+    boolean NotonTop = false;
 
 
     Texture white = new Texture("white.jpg");
@@ -67,8 +69,11 @@ public class GameScreen implements Screen {
 
         this.game = game;
         active = blocks.length-1;
+
         restartHUD = new RestartHUD(game.batch);
         hud = new HUD(game.batch);
+        gameOverHUD = new GameOverHUD(game.batch);
+
         //Equates variable values to that declared in MyGdxGame class
         LEVEL_WIDTH = MyGdxGame.V_WIDTH;
         LEVEL_HEIGHT = MyGdxGame.V_HEIGHT;
@@ -84,7 +89,6 @@ public class GameScreen implements Screen {
 //        System.out.println(Gdx.graphics.getWidth()+" ,xy "+Gdx.graphics.getHeight());
 
         Block.xborder=LEVEL_WIDTH;
-
 
         for(int i = 0; i < blocks.length; i++){
             blocks[i] = new Block(constants.blockwidth, constants.blockheight, (LEVEL_WIDTH-constants.blockwidth)/2, (LEVEL_HEIGHT-constants.blockheight)/2, type.BLOCK, blocktextures[i], game.batch);
@@ -131,9 +135,12 @@ public class GameScreen implements Screen {
             game.batch.draw(white, 0, 0, LEVEL_WIDTH, LEVEL_HEIGHT);
         }
         game.batch.end();
-        if(!restartInProgress) {
+        if(!restartInProgress && !gameOver) {
             game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
             hud.stage.draw();
+        }else if(!restartInProgress && gameOver){
+            game.batch.setProjectionMatrix(gameOverHUD.stage.getCamera().combined);
+            gameOverHUD.stage.draw();
         }else{
             game.batch.setProjectionMatrix(restartHUD.stage.getCamera().combined);
             if(RestartHUD.renderHUD) {
@@ -186,14 +193,14 @@ public class GameScreen implements Screen {
                 }
 //                blocks[blockunder].texture=testTexture;
                 if(blocks[i].isCollide(blocks[blockunder])){
-                    gameOver=false;
+                    NotonTop=false;
                 }else{
-                   gameOver=true;
+                   NotonTop=true;
                 }
             }
         }
         if(Block.movetoNextTurn){
-            if(!gameOver) {
+            if(!NotonTop) {
 
 //                Block Collision Handler
                 if(!ranOnce) {
@@ -226,7 +233,7 @@ public class GameScreen implements Screen {
 
                     score++;
 
-                    hud.updateScore(Integer.toString(score), false, highScore);
+                    hud.updateScore(Integer.toString(score));
 
                     if(score%5==0){
                         fivesPassed++;
@@ -254,8 +261,8 @@ public class GameScreen implements Screen {
                         minimum = 0;
                     }
                 }
-            }
-            else{
+            }else{
+                gameOver=true;
                 System.out.println("gameOver");
                 try {
                     highScore = Integer.parseInt(Base64Coder.decodeString(prefs.getString("highscore")));
@@ -269,16 +276,16 @@ public class GameScreen implements Screen {
                     System.out.println("hi");
                 }
                 highScore=Integer.parseInt(Base64Coder.decodeString(prefs.getString("highscore")));
-                hud.updateScore(Integer.toString(score), true, highScore);
+                gameOverHUD.updateScore(Integer.toString(score), highScore);
 
-                if(touchcounter>0) {
-                    if (Gdx.input.justTouched()) {
-                        restartInProgress = true;
-                        touchcounter=0;
-                    }
-                }else {
-                    touchcounter++;
-                }
+//                if(touchcounter>0) {
+//                    if (Gdx.input.justTouched()) {
+//                        restartInProgress = true;
+//                        touchcounter=0;
+//                    }
+//                }else {
+//                    touchcounter++;
+//                }
             }
 
         }
@@ -306,7 +313,7 @@ public class GameScreen implements Screen {
         score=0;
         fivesPassed=0;
         fivesPrevious=0;
-        hud.updateScore(Integer.toString(score), gameOver, highScore);
+        hud.updateScore(Integer.toString(score));
         minimum=0;
         blockunder = minimum-1;
 

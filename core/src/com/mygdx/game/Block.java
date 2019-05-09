@@ -29,7 +29,7 @@ public class Block extends entity{
         if((x-e.x)==0){
             perfect=true;
         }
-        if (Math.abs(x - e.x) < 20 && width >= 10) {
+        if (Math.abs(x - e.x) < 40 && width >= 10) {
             x = e.x;
             perfect=true;
         } else {

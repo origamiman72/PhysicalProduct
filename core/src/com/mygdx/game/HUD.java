@@ -23,10 +23,7 @@ public class HUD {
 
     Stage stage;
     Label score;
-    Label scoreWas;
     int scorenumber=0;
-    Label restart;
-    Label highscore;
 
     public HUD(SpriteBatch batch){
 
@@ -40,41 +37,16 @@ public class HUD {
 
         //Labels take in: STRING, LabelStyle(Font,Color)
         score = new Label("Score: " + scorenumber, new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
-        scoreWas = new Label("", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
-        restart = new Label("", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
-        highscore = new Label("", new Label.LabelStyle(constants.pixelFontborder, Color.WHITE));
+
         score.setFontScale(2F);
-        scoreWas.setFontScale(1.5F);
-        restart.setFontScale(1.5F);
-        highscore.setFontScale(1.4F);
-
         displayTable.add(score);
-
-        displayTable.row();
-        displayTable.add(scoreWas).spaceTop(50);
-
-        displayTable.row();
-        displayTable.add(highscore).spaceTop(50);
-
-        displayTable.row();
-        displayTable.add(restart).spaceTop(200);
 
         stage.addActor(displayTable);
 
     }
 
-    public void updateScore (String s, boolean gameOver, int highScore){
-        if(!gameOver) {
-            score.setText("Score: " + s);
-            scoreWas.setText("");
-            restart.setText("");
-            highscore.setText("");
-        }else{
-            score.setText("Game Over");
-            scoreWas.setText("Your score was " + s);
-            highscore.setText("The High Score is " + highScore);
-            restart.setText("Touch to Restart");
-        }
+    public void updateScore (String s){
+        score.setText("Score: " + s);
     }
 
 }
