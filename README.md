@@ -15,7 +15,7 @@ Latest Version:<br />
   * [Download v0.1a Android](https://drive.google.com/open?id=1ii_TVfv9yQ1jSzKhtoC0rJCJqFpuRMnX)
 
 
-</p></details>g
+</p></details>
 
 <details>
 <summary>Changelog:</summary><p>
